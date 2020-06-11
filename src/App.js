@@ -21,9 +21,43 @@ const octokit = new Octokit({
 const Loader = () =>
   <div>Loading...</div>
 
+const Issues = () => {
+  const [loaded, setLoaded] = useState(false)
+  const [issues, setIssues] = useState([])
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      const { data } = await octokit.issues.list()
+      setIssues(data)
+      setLoaded(true)
+    }
+    fetchIssues()
+  }, [])
+
+  return (
+    <div>
+      {!loaded && <Loader />} 
+      {loaded &&
+        issues.map(issue => <p>{issue.title}</p>)
+      }
+    </div>
+  )
+}
+
+const Nav = ({ setView }) => (
+  <nav>
+    <button onClick={() => setView("issues")}>Issues</button>
+    <button onClick={() => setView("pulls")}>Pull Requests</button>
+    <button onClick={() => setView("notifications")}>Notifications</button>
+    <button onClick={() => setView("followers")}>Followers</button>
+    <button onClick={() => setView("following")}>Following</button>
+  </nav>
+)
+
 function App() {
   const [user, setUser] = useState(null)
   const [loaded, setLoaded] = useState(false)
+  const [view, setView] = useState("")
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -37,10 +71,10 @@ function App() {
   return (
     <div>
       <h1>Github Reader</h1>
+      <Nav setView={setView} />
       {!loaded && <Loader />}
       {loaded && 
         <>
-          {console.log(user)}
           <h3>{user.name}</h3>
           <img src={user.avatar_url} alt="profile img"/>
           <ul>
@@ -51,6 +85,7 @@ function App() {
           </ul>
         </>  
       }
+      {view === "issues" && <Issues />}
     </div>
   );
 }
