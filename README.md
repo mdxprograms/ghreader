@@ -15,3 +15,15 @@ Uses Octokit REST sdk - https://octokit.github.io/rest.js/v17
  * get notifications for user -> octokit.activity.listNotificationsForAuthenticatedUser();
  */
 ```
+
+## Development
+
+- Create an auth token in developer settings with access to `gist, notifications, repo, user`
+- Create a new `.env.local` in the project root directory with `REACT_APP_GH_TOKEN=<your_auth_token`
+- `npm i && npm start`
+
+
+## Future Plans
+- package in electron app (request auth token on first use and store in local env file)
+- graphs
+- ...
