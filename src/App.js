@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Octokit } from '@octokit/rest'
-import { Layout, Skeleton } from 'antd'
+import { Layout } from 'antd'
 import Nav from './components/Nav'
+import Loader from './components/Loader'
 import './App.css'
 
 const octokit = new Octokit({
@@ -9,23 +10,6 @@ const octokit = new Octokit({
 })
 
 const { Content } = Layout
-
-/**
- * get users following -> octokit.users.listFollowedByAuthenticated();
- * get users followers -> octokit.users.listFollowersForAuthenticatedUser();
- * get issues assigned to user -> octokit.issues.list();
- * get gists owned by user -> octokit.gists.list();
- * get gist owned by user ->
- * octokit.gists.get({
- *   gist_id,
- * });
- * get notifications for user -> octokit.activity.listNotificationsForAuthenticatedUser();
- */
-
-const Loader = ({ loaded }) =>
-  <Skeleton loading={!loaded} style={{ height: '100vh' }} active>
-    <div style={{ minHeight: '100vh' }}></div>
-  </Skeleton>
 
 const Issues = () => {
   const [loaded, setLoaded] = useState(false)
@@ -45,7 +29,7 @@ const Issues = () => {
     <div>
       {!loaded && <Loader loaded={loaded} /> }
       {loaded &&
-        issues.map(issue => <p>{issue.title}</p>)
+        issues.map((issue, i) => <p key={i}>{issue.title}</p>)
       }
     </div>
   )
