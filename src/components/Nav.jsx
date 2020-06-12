@@ -1,8 +1,22 @@
 import React from 'react'
-import { Layout, Menu, Avatar } from 'antd'
+import { Layout, Menu, Avatar, Typography, Badge } from 'antd'
 import PropTypes from 'prop-types'
 
 const { Sider } = Layout
+const { Title, Text } = Typography
+
+const badgeStyle = {
+  background: 'lightblue',
+  border: 'none',
+  borderRadius: 0,
+  boxShadow: '0 0 5px #000',
+  color: '#555',
+  marginLeft: '16px'
+}
+
+const headingStyle = {
+  color: 'lightblue'
+}
 
 const Nav = ({ user, setView }) => (
   <Sider style={{
@@ -11,9 +25,11 @@ const Nav = ({ user, setView }) => (
     position: 'fixed',
     left: 0
   }}>
-    <div style={{ margin: '24px auto', width: '50%', textAlign: 'center' }} >
+    <div style={{ margin: '24px auto', width: '60%', textAlign: 'center' }} >
       <Avatar size={72} src={user.avatar_url} />
-      <h3 color='secondary'>{user.name}</h3>
+      <Title level={4}>
+        <Text style={headingStyle}>{user.name}</Text>
+      </Title>
       <a href={user.html_url} target='_blank' rel="noopener noreferrer">@{user.login}</a>
     </div>
     <Menu theme="dark" mode="vertical-left">
@@ -27,16 +43,16 @@ const Nav = ({ user, setView }) => (
         Notifications
       </Menu.Item>
       <Menu.Item onClick={() => setView('followers')} key="4">
-        Followers {user.followers}
+        Followers <Badge count={user.followers} style={badgeStyle} />
       </Menu.Item>
       <Menu.Item onClick={() => setView('following')} key="5">
-        Following {user.following}
+        Following <Badge count={user.following} style={badgeStyle} />
       </Menu.Item>
-      <Menu.Item>
-        Public Repos {user.public_repos}
+      <Menu.Item onClick={() => setView('public')} key="6">
+        Public Repos <Badge count={user.public_repos} style={badgeStyle} />
       </Menu.Item>
-      <Menu.Item>
-        Private Repos {user.total_private_repos}
+      <Menu.Item onClick={() => setView('private')} key="7">
+        Private Repos <Badge count={user.total_private_repos} style={badgeStyle} />
       </Menu.Item>
     </Menu>
   </Sider>

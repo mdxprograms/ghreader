@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Octokit } from '@octokit/rest'
-import { Layout } from 'antd'
+import { Layout, Table } from 'antd'
 import Nav from './components/Nav'
 import Loader from './components/Loader'
 import './App.css'
@@ -29,7 +29,7 @@ const Issues = () => {
     <div>
       {!loaded && <Loader loaded={loaded} /> }
       {loaded &&
-        issues.map((issue, i) => <p key={i}>{issue.title}</p>)
+        <Table dataSource={issues.map((issue, i) => { issue.key = issues[i]; return issue })} columns={issues.map((issue, i) => { issue.dataIndex = issues[i]; issue.key = issues[i]; return issue })} />
       }
     </div>
   )
