@@ -2,10 +2,8 @@ import React from 'react'
 import { Skeleton } from 'antd'
 import PropTypes from 'prop-types'
 
-const Loader = ({ loaded = false }) =>
-  <Skeleton loading={!loaded} style={{ height: '100vh' }} active>
-    <div style={{ minHeight: '100vh' }}></div>
-  </Skeleton>
+const Loader = ({ loaded }) =>
+  <Skeleton loading={!loaded} paragraph={{ rows: 25 }} active />
 
 Loader.propTypes = {
   loaded: PropTypes.bool

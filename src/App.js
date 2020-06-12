@@ -51,22 +51,13 @@ function App () {
 
   return (
     <Layout>
-      <Loader loaded={loaded} />
+      {!loaded && <Loader loaded={loaded} />}
       {loaded &&
         <>
-          <Nav profileImg={user.avatar_url} setView={setView} />
+          <Nav user={user} setView={setView} />
           <Layout className="site-layout" style={{ marginLeft: 200 }}>
             <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
               <div className="site-layout-background" style={{ padding: 24 }}>
-
-                <h3>{user.name}</h3>
-                <ul>
-                  <li>Followers: {user.followers}</li>
-                  <li>Following: {user.following}</li>
-                  <li>Public Repos: {user.public_repos}</li>
-                  <li>Private: {user.total_private_repos}</li>
-                </ul>
-
                 {view === 'issues' && <Issues />}
               </div>
             </Content>
