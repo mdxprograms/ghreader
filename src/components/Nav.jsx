@@ -8,7 +8,6 @@ const { Title, Text } = Typography
 const badgeStyle = {
   background: 'lightblue',
   border: 'none',
-  borderRadius: 0,
   boxShadow: '0 0 5px #000',
   color: '#555',
   marginLeft: '16px'
