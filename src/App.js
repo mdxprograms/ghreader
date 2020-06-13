@@ -1,69 +1,40 @@
-import React, { useEffect, useState } from 'react'
-import { Octokit } from '@octokit/rest'
-import { Layout, Table } from 'antd'
+import React, { useEffect } from 'react'
+import { Layout } from 'antd'
+import { useSelector, useDispatch } from 'react-redux'
+import { userSelect, fetchUser } from './store/userSlice'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Nav from './components/Nav'
-import Loader from './components/Loader'
-import './App.css'
 
-const octokit = new Octokit({
-  auth: process.env.REACT_APP_GH_TOKEN
-})
+// Views
+import Issues from './routes/Issues'
+import './App.css'
 
 const { Content } = Layout
 
-const Issues = () => {
-  const [loaded, setLoaded] = useState(false)
-  const [issues, setIssues] = useState([])
+const App = () => {
+  const dispatch = useDispatch()
+  const user = useSelector(userSelect)
 
   useEffect(() => {
-    const fetchIssues = async () => {
-      const { data } = await octokit.issues.list()
-      setIssues(data)
-      setLoaded(true)
-    }
-
-    fetchIssues()
-  }, [])
-
-  return (
-    <div>
-      {!loaded && <Loader loaded={loaded} /> }
-      {loaded &&
-        <Table dataSource={issues.map((issue, i) => { issue.key = issues[i]; return issue })} columns={issues.map((issue, i) => { issue.dataIndex = issues[i]; issue.key = issues[i]; return issue })} />
-      }
-    </div>
-  )
-}
-
-function App () {
-  const [user, setUser] = useState(null)
-  const [loaded, setLoaded] = useState(false)
-  const [view, setView] = useState('')
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await octokit.users.getAuthenticated()
-      setUser(data)
-      setLoaded(true)
-    }
-    fetchUser()
-  }, [])
+    dispatch(fetchUser())
+  }, [dispatch])
 
   return (
     <Layout>
-      {!loaded && <Loader loaded={loaded} />}
-      {loaded &&
-        <>
-          <Nav user={user} setView={setView} />
-          <Layout className="site-layout" style={{ marginLeft: 200 }}>
-            <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-              <div className="site-layout-background" style={{ padding: 24 }}>
-                {view === 'issues' && <Issues />}
-              </div>
-            </Content>
-          </Layout>
-        </>
-      }
+      <Router>
+        <Nav user={user} />
+        <Layout className="site-layout" style={{ marginLeft: 200 }}>
+          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+            <div className="site-layout-background" style={{ padding: 24 }}>
+              <Switch>
+                <Route path="/">
+                  <Issues />
+                </Route>
+              </Switch>
+            </div>
+          </Content>
+        </Layout>
+      </Router>
     </Layout>
   )
 }

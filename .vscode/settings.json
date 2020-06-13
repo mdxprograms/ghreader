@@ -1,4 +1,7 @@
 {
   "deno.enable": false,
-  "eslint.format.enable": true
+  "eslint.alwaysShowStatus": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.format.enable": true,
+  "eslint.enable": true
 }
