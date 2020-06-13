@@ -1,34 +1,38 @@
 import React, { useEffect } from "react"
 import { useSelector, useDispatch } from 'react-redux'
-import { Table, ColumnGroup } from 'antd'
+import { Table, Tag } from 'antd'
 import { issuesSelect, loadingSelect, fetchIssues } from '../store/issuesSlice'
 import Loader from '../components/Loader'
 
 const IssueTable = ({ issues }) => { 
   const issuesData = issues.map(issue => ({
     key: issue.id,
-    title: issue.title,
-    ghLink: issue.html_url,
+    titleAndLink: {
+      title: issue.title,
+      link: issue.html_url
+    },
     state: issue.state
   }))
   const issuesColumns = [
     {
-      key: 'title',
-      dataIndex: 'title',
-      title: 'Title'
-    },
-    {
-      key: 'ghLink',
-      dataIndex: 'ghLink',
-      title: 'Github url'
+      key: 'titleAndLink',
+      dataIndex: 'titleAndLink',
+      title: 'Issue',
+      render: ({ title, link}) => (
+        <a target="_blank" href={link} rel="noopener noreferrer">{title}</a>
+      )
     },
     {
       key: 'state',
       dataIndex: 'state',
-      title: 'Issue Status'
+      title: 'Status',
+      render: state => {
+        const color = state === "open" ? "#2cbe4e" : "#cb2431"
+        return <Tag color={color}>{state}</Tag>
+      }
     }
   ]
-  return <Table dataSource={issues} columns={issuesColumns} />
+  return <Table dataSource={issuesData} columns={issuesColumns} />
 }
 
 function Issues () {

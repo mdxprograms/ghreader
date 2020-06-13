@@ -17,14 +17,15 @@ const App = () => {
 
   useEffect(() => {
     dispatch(fetchUser())
-  }, [dispatch])
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <Layout>
       <Router>
         <Nav user={user} />
         <Layout className="site-layout" style={{ marginLeft: 200 }}>
-          <Content style={{ margin: '24px 16px 0', overflow: 'initial' }}>
+          <Content style={{ overflow: 'initial', height: '100vh' }}>
             <div className="site-layout-background" style={{ padding: 24 }}>
               <Switch>
                 <Route path="/">
