@@ -1,10 +1,14 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import userReducer from './userSlice'
+import issuesReducer from './issuesSlice'
 
 const rootReducer = combineReducers({
-  user: userReducer
+  user: userReducer,
+  issues: issuesReducer
 })
 
-export default configureStore({
+const store = configureStore({
   reducer: rootReducer
 })
+
+export default store
