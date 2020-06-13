@@ -36,23 +36,8 @@ const Nav = ({ user }) => (
       <Menu.Item key="/">
         <NavLink  to="/" className="nav-text">Issues</NavLink>
       </Menu.Item>
-      <Menu.Item key="/pull-requests">
-        Pull Requests
-      </Menu.Item>
-      <Menu.Item key="/notifications">
-        Notifications
-      </Menu.Item>
-      <Menu.Item key="/followers">
-        Followers <Badge count={user.followers} style={badgeStyle} />
-      </Menu.Item>
-      <Menu.Item key="/following">
-        Following <Badge count={user.following} style={badgeStyle} />
-      </Menu.Item>
-      <Menu.Item key="/public-repos">
-        Public Repos <Badge count={user.public_repos} style={badgeStyle} />
-      </Menu.Item>
-      <Menu.Item key="/private-repos">
-        Private Repos <Badge count={user.total_private_repos} style={badgeStyle} />
+      <Menu.Item key="/repos">
+        <NavLink  to="/repos" className="nav-text">Repos</NavLink>
       </Menu.Item>
     </Menu>
   </Sider>

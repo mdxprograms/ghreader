@@ -6,7 +6,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Nav from './components/Nav'
 
 // Views
-import Issues from './routes/Issues'
+import IssuesRoute from './routes/Issues'
+import PullRequestsRoute from './routes/PullRequests'
+import ReposRequestRoute from './routes/Repos'
+
 import './App.css'
 
 const { Content } = Layout
@@ -28,8 +31,14 @@ const App = () => {
           <Content style={{ overflow: 'initial', height: '100vh' }}>
             <div className="site-layout-background" style={{ padding: 24 }}>
               <Switch>
-                <Route path="/">
-                  <Issues />
+                <Route key="1" exact path="/">
+                  <IssuesRoute />
+                </Route>
+                <Route key="2" path="/repos/:name">
+                  <ReposRequestRoute />
+                </Route>
+                <Route key="3" exact path="/repos">
+                  <ReposRequestRoute />
                 </Route>
               </Switch>
             </div>
