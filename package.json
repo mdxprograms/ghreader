@@ -1,6 +1,7 @@
 {
   "name": "ghreader",
   "version": "0.1.0",
+  "repository": "https://github.com/mdxprograms/ghreader",
   "private": true,
   "dependencies": {
     "@octokit/rest": "^17.11.0",
