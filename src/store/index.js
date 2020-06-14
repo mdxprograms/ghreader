@@ -3,12 +3,14 @@ import userReducer from './userSlice'
 import issuesReducer from './issuesSlice'
 import pullRequestsReducer from './pullRequestsSlice'
 import reposReducer from './reposSlice'
+import repoReducer from './repoSlice'
 
 const rootReducer = combineReducers({
   user: userReducer,
   issues: issuesReducer,
   pullRequests: pullRequestsReducer,
-  repos: reposReducer
+  repos: reposReducer,
+  repo: repoReducer
 })
 
 const store = configureStore({
