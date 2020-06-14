@@ -4,14 +4,14 @@ import { octokit } from '../config'
 const initialState = {
   list: [],
   loading: false,
-  error: null
+  error: null,
 }
 
 const issuesSlice = createSlice({
   name: 'issues',
   initialState,
   reducers: {
-    getIssuesStart: (state) => {
+    getIssuesStart: state => {
       state.loading = true
       state.error = null
     },
@@ -23,8 +23,8 @@ const issuesSlice = createSlice({
     getIssuesFailure: (state, action) => {
       state.loading = false
       state.error = action.payload
-    }
-  }
+    },
+  },
 })
 
 // Selectors
@@ -34,17 +34,22 @@ export const loadingSelect = ({ issues }) => issues.loading
 export const {
   getIssuesStart,
   getIssuesSuccess,
-  getIssuesFailure
+  getIssuesFailure,
 } = issuesSlice.actions
 
 // Thunks
-export const fetchIssues = () => async dispatch => {
-  try {
-    dispatch(getIssuesStart())
-    const issuesList = await octokit.issues.listForAuthenticatedUser()
-    dispatch(getIssuesSuccess(issuesList))
-  } catch (error) {
-    dispatch(getIssuesFailure(error))
+export const fetchIssues = () => async (dispatch, getState) => {
+  if (getState().issues.list.length === 0) {
+    try {
+      dispatch(getIssuesStart())
+      const issuesList = await octokit.issues.listForAuthenticatedUser({
+        sort: 'created',
+        per_page: 100,
+      })
+      dispatch(getIssuesSuccess(issuesList))
+    } catch (error) {
+      dispatch(getIssuesFailure(error))
+    }
   }
 }
 

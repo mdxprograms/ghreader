@@ -38,13 +38,15 @@ export const {
 } = reposSlice.actions
 
 // Thunks
-export const fetchRepos = () => async dispatch => {
-  try {
-    dispatch(getReposStart())
-    const reposList = await octokit.repos.listForAuthenticatedUser({ sort: 'updated', per_page: 50, type: 'all' })
-    dispatch(getReposSuccess(reposList))
-  } catch (error) {
-    dispatch(getReposFailure(error))
+export const fetchRepos = () => async (dispatch, getState) => {
+  if (getState().repos.list.length === 0) {
+    try {
+      dispatch(getReposStart())
+      const reposList = await octokit.repos.listForAuthenticatedUser({ sort: 'updated', per_page: 50, type: 'all' })
+      dispatch(getReposSuccess(reposList))
+    } catch (error) {
+      dispatch(getReposFailure(error))
+    }
   }
 }
 
