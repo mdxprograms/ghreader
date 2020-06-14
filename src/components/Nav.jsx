@@ -1,18 +1,10 @@
 import React from 'react'
-import { Layout, Menu, Avatar, Typography, Badge } from 'antd'
+import { Layout, Menu, Avatar, Typography } from 'antd'
 import { NavLink } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 const { Sider } = Layout
 const { Title, Text } = Typography
-
-const badgeStyle = {
-  background: 'lightblue',
-  border: 'none',
-  boxShadow: '0 0 5px #000',
-  color: '#555',
-  marginLeft: '16px'
-}
 
 const headingStyle = {
   color: 'lightblue'
@@ -33,10 +25,10 @@ const Nav = ({ user }) => (
       <a href={user.html_url} target='_blank' rel="noopener noreferrer">@{user.login}</a>
     </div>
     <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={['/']}>
-      <Menu.Item key="/">
+      <Menu.Item key="1">
         <NavLink  to="/" className="nav-text">Issues</NavLink>
       </Menu.Item>
-      <Menu.Item key="/repos">
+      <Menu.Item key="2">
         <NavLink  to="/repos" className="nav-text">Repos</NavLink>
       </Menu.Item>
     </Menu>

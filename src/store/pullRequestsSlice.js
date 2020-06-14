@@ -45,7 +45,6 @@ export const fetchPullRequests = (owner, repo) => async (dispatch) => {
       owner,
       repo
     })
-    console.log(pullRequestsList)
     dispatch(getPullRequestsSuccess(pullRequestsList))
   } catch (error) {
     dispatch(getPullRequestsFailure(error))
