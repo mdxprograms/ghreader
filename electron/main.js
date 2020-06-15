@@ -1,4 +1,5 @@
 const { app, shell, BrowserWindow, ipcMain } = require('electron')
+const { autoUpdater } = require('electron-updater')
 const { channels } = require('../src/shared/constants')
 const path = require('path')
 const url = require('url')
@@ -23,14 +24,16 @@ function createWindow() {
   })
   mainWindow.setMenuBarVisibility(false)
   mainWindow.loadURL(startUrl)
-  mainWindow.webContents.on('new-window', function(event, url){
-   event.preventDefault();
-   shell.openExternal(url);
-});
+  mainWindow.webContents.on('new-window', function (event, url) {
+    event.preventDefault()
+    shell.openExternal(url)
+  })
   mainWindow.on('closed', function () {
     mainWindow = null
   })
-
+  mainWindow.once('ready-to-show', () => {
+    autoUpdater.checkForUpdatesAndNotify()
+  })
 }
 
 app.on('ready', createWindow)
@@ -52,4 +55,16 @@ ipcMain.on(channels.APP_INFO, event => {
     appName: app.getName(),
     appVersion: app.getVersion()
   })
+})
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available')
+})
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded')
+})
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall()
 })

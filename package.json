@@ -13,6 +13,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.3.3",
+    "electron-updater": "^4.3.1",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.10",
     "lodash": "^4.17.15",
