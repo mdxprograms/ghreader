@@ -1,3 +1,4 @@
+const fs = require('fs')
 const { app, shell, BrowserWindow, ipcMain } = require('electron')
 const { autoUpdater } = require('electron-updater')
 const { channels } = require('../src/shared/constants')
@@ -54,6 +55,22 @@ ipcMain.on(channels.APP_INFO, event => {
   event.sender.send(channels.APP_INFO, {
     appName: app.getName(),
     appVersion: app.getVersion()
+  })
+})
+
+ipcMain.on(channels.USER_TOKEN_CHECK, event => {
+  const envFile = fs.existsSync('./.env.local')
+  let hasToken = false
+
+  if (envFile) {
+    const fileInfo = fs.readFileSync('./.env.local').toString('utf-8')
+    hasToken =
+      fileInfo.includes('REACT_APP_GH_TOKEN') &&
+      fileInfo.split('=')[1].length > 0
+  }
+
+  event.sender.send(channels.USER_TOKEN_CHECK, {
+    hasToken
   })
 })
 

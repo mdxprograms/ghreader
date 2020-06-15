@@ -35,6 +35,7 @@ const App = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [appName, setAppName] = useState("")
   const [appVersion, setAppVersion] = useState("")
+  const [hasToken, setHasToken] = useState(false)
   const dispatch = useDispatch()
   const user = useSelector(userSelect)
   const loading = useSelector(loadingSelect)
@@ -42,23 +43,33 @@ const App = () => {
 
   useEffect(() => {
     ipcRenderer.send(channels.APP_INFO)
+    ipcRenderer.send(channels.USER_TOKEN_CHECK)
+
     ipcRenderer.on(channels.APP_INFO, (event, arg) => {
       ipcRenderer.removeAllListeners(channels.APP_INFO)
       setAppName(arg.appName)
       setAppVersion(arg.appVersion)
     })
+    ipcRenderer.on(channels.USER_TOKEN_CHECK, (event, arg) => {
+      ipcRenderer.removeAllListeners(channels.USER_TOKEN_CHECK)
+      setHasToken(arg.hasToken)
+    })
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    dispatch(fetchUser())
+    if (hasToken) {
+      dispatch(fetchUser())
+    }
     // eslint-disable-next-line
-  }, [])
+  }, [hasToken])
 
   useEffect(() => {
     if (user) {
       dispatch(fetchNotifications())
     }
-  }, [dispatch, user])
+    // eslint-disable-next-line
+  }, [user])
 
   return (
     <Layout>
