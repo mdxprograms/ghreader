@@ -1,9 +1,14 @@
-import React, { useEffect } from "react"
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import ReactMarkdown from 'react-markdown'
 import { userSelect } from '../store/userSlice'
-import { repoSelect, repoReadmeSelect, loadingSelect, fetchRepo } from '../store/repoSlice'
+import {
+  repoSelect,
+  repoReadmeSelect,
+  loadingSelect,
+  fetchRepo,
+} from '../store/repoSlice'
 import Loader from '../components/Loader'
 
 /**
@@ -23,7 +28,6 @@ import Loader from '../components/Loader'
  * updated_at (Date string)
  */
 
-
 const Repo = () => {
   const dispatch = useDispatch()
   const repo = useSelector(repoSelect)
@@ -35,20 +39,15 @@ const Repo = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(fetchRepo({ owner: user.login, repo: name}))
+      dispatch(fetchRepo({ owner: user.login, repo: name }))
     }
     // eslint-disable-next-line
   }, [])
 
   return (
     <div>
-      {(loading && !repo) && <Loader loaded={!loading} />}
-      {(!loading && repo) && (
-        <>
-          <h1>{repo.name}</h1>
-          <ReactMarkdown source={readme} />
-        </>
-      )}
+      {loading && !repo && <Loader loaded={!loading} />}
+      {!loading && repo && <ReactMarkdown source={readme} />}
     </div>
   )
 }
