@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { Layout, PageHeader, Drawer, Button } from 'antd'
+import { Layout, PageHeader, Drawer, Button, Typography, Tag, Space } from 'antd'
 import { useSelector, useDispatch } from 'react-redux'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+// electron
+import { channels } from './shared/constants'
+
+// Stores
 import { userSelect, fetchUser, loadingSelect } from './store/userSlice'
 import {
   notificationsSelect,
   fetchNotifications,
 } from './store/notificationsSlice'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+
+// Components
 import Loader from './components/Loader'
 import Nav from './components/Nav'
 
@@ -16,16 +23,31 @@ import PullRequestsRoute from './routes/PullRequests'
 import ReposRoute from './routes/Repos'
 import RepoRoute from './routes/Repo'
 
+// Base style
 import './App.css'
 
+// intialized constants
+const { ipcRenderer } = window.require('electron')
 const { Content } = Layout
+const { Title } = Typography
 
 const App = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)
+  const [appName, setAppName] = useState("")
+  const [appVersion, setAppVersion] = useState("")
   const dispatch = useDispatch()
   const user = useSelector(userSelect)
   const loading = useSelector(loadingSelect)
   const notifications = useSelector(notificationsSelect)
+
+  useEffect(() => {
+    ipcRenderer.send(channels.APP_INFO)
+    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
+      ipcRenderer.removeAllListeners(channels.APP_INFO)
+      setAppName(arg.appName)
+      setAppVersion(arg.appVersion)
+    })
+  }, [])
 
   useEffect(() => {
     dispatch(fetchUser())
@@ -60,6 +82,14 @@ const App = () => {
             ghost={false}
             onBack={() => window.history.back()}
             title="Github Reader"
+            extra={[
+              <Space>
+                <Title level={4} key="1">{appName}</Title>
+                <Tag key="2">
+                  v{appVersion}
+                </Tag>
+              </Space>
+            ]}
           >
             <Button type="primary" onClick={() => setDrawerOpen(!drawerOpen)}>
               Notifications

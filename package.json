@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "repository": "https://github.com/mdxprograms/ghreader",
   "private": true,
+  "productName": "Github Reader",
+  "main": "electron/main.js",
   "dependencies": {
     "@octokit/rest": "^17.11.0",
     "@reduxjs/toolkit": "^1.3.6",
@@ -10,6 +12,7 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "antd": "^4.3.3",
+    "electron": "^9.0.4",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.10",
     "lodash": "^4.17.15",
@@ -24,7 +27,8 @@
     "source-map-explorer": "^2.4.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "export BROWSER=none && react-scripts start",
+    "start-electron": "export ELECTRON_START_URL=http://localhost:3000 && electron .",
     "build": "react-scripts build",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "test": "react-scripts test",
