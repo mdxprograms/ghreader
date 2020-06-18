@@ -24,12 +24,12 @@ const Nav = ({ user }) => (
       </Title>
       <a href={user.html_url} target='_blank' rel="noopener noreferrer">@{user.login}</a>
     </div>
-    <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={['/']}>
+    <Menu theme="dark" mode="vertical-left" defaultSelectedKeys={['1']}>
       <Menu.Item key="1">
-        <NavLink  to="/" className="nav-text">Issues</NavLink>
+        <NavLink to="/" className="nav-text">Issues</NavLink>
       </Menu.Item>
       <Menu.Item key="2">
-        <NavLink  to="/repos" className="nav-text">Repos</NavLink>
+        <NavLink to="/repos" className="nav-text">Repos</NavLink>
       </Menu.Item>
     </Menu>
   </Sider>
