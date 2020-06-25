@@ -11,6 +11,18 @@ const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
+    getMarkAllAsReadStart: (state) => {
+      state.loading = true
+      state.error = null
+    },
+    getMarkAllAsReadSuccess: (state, action) => {
+      state.list = []
+      state.error = null
+    },
+    getMarkAllAsReadFailure: (state, action) => {
+      state.error = action.payload
+      state.loading = false
+    },
     getNotificationsStart: (state) => {
       state.loading = true
       state.error = null
@@ -34,7 +46,10 @@ export const loadingSelect = ({ notifications }) => notifications.loading
 export const {
   getNotificationsStart,
   getNotificationsSuccess,
-  getNotificationsFailure
+  getNotificationsFailure,
+  getMarkAllAsReadStart,
+  getMarkAllAsReadSuccess,
+  getMarkAllAsReadFailure
 } = notificationsSlice.actions
 
 // Thunks
@@ -45,6 +60,16 @@ export const fetchNotifications = () => async (dispatch) => {
     dispatch(getNotificationsSuccess(notificationsList))
   } catch (error) {
     dispatch(getNotificationsFailure(error))
+  }
+}
+
+export const markAllAsRead = () => async (dispatch) => {
+  try {
+    dispatch(getMarkAllAsReadStart())
+    const success = await octokit.activity.markNotificationsAsRead()
+    dispatch(getMarkAllAsReadSuccess(success))
+  } catch (error) {
+    dispatch(getMarkAllAsReadFailure(error))
   }
 }
 
